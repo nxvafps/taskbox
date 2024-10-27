@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchTasks } from "../lib/store";
+import { fetchTasks } from "../lib/store/asyncActions.js";
 
 import TaskList from "./TaskList";
 
