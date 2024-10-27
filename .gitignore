@@ -1,5 +1,26 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# vite cashe
+.vite
+
+# storybook static build
+/storybook-static
+
+# local env settings
+.env
+
+# ide specific
+.vscode/
+.idea/
+
+# log files
+*.log
+
+# temp files
+*.tmp
+*.swp
+*.swo
+
 # dependencies
 /node_modules
 /.pnp
@@ -8,7 +29,7 @@
 # testing
 /coverage
 
-# production
+# build output
 /build
 
 # misc
