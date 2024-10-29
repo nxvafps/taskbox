@@ -1,3 +1,7 @@
+import React from "react";
+
+import type { Meta, StoryObj } from "@storybook/react";
+
 import TaskList from "./TaskList";
 
 import * as TaskStories from "./Task.stories";
@@ -9,16 +13,22 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 // A super-simple mock of the state of the store
 export const MockedState = {
   tasks: [
-    { ...TaskStories.Default.args.task, id: "1", title: "Task 1" },
-    { ...TaskStories.Default.args.task, id: "2", title: "Task 2" },
-    { ...TaskStories.Default.args.task, id: "3", title: "Task 3" },
-    { ...TaskStories.Default.args.task, id: "4", title: "Task 4" },
-    { ...TaskStories.Default.args.task, id: "5", title: "Task 5" },
-    { ...TaskStories.Default.args.task, id: "6", title: "Task 6" },
+    { ...TaskStories.defaultData, id: "1", title: "Task 1" },
+    { ...TaskStories.defaultData, id: "2", title: "Task 2" },
+    { ...TaskStories.defaultData, id: "3", title: "Task 3" },
+    { ...TaskStories.defaultData, id: "4", title: "Task 4" },
+    { ...TaskStories.defaultData, id: "5", title: "Task 5" },
+    { ...TaskStories.defaultData, id: "6", title: "Task 6" },
   ],
   status: "idle",
   error: null,
 };
+
+interface Task {
+  id: string;
+  title: string;
+  state: string;
+}
 
 // A super-simple mock of a redux store
 const Mockstore = ({ taskboxState, children }) => (
@@ -31,7 +41,9 @@ const Mockstore = ({ taskboxState, children }) => (
           reducers: {
             updateTaskState: (state, action) => {
               const { id, newTaskState } = action.payload;
-              const task = state.tasks.findIndex((task) => task.id === id);
+              const task: number = state.tasks.findIndex(
+                (task: Task) => task.id === id
+              );
               if (task >= 0) {
                 state.tasks[task].state = newTaskState;
               }
@@ -45,7 +57,7 @@ const Mockstore = ({ taskboxState, children }) => (
   </Provider>
 );
 
-export default {
+const meta: Meta<typeof TaskList> = {
   component: TaskList,
   title: "TaskList",
   decorators: [(story) => <div style={{ margin: "3rem" }}>{story()}</div>],
@@ -53,13 +65,16 @@ export default {
   excludeStories: /.*MockedState$/,
 };
 
-export const Default = {
+export default meta;
+
+type Story = StoryObj<typeof TaskList>;
+export const Default: Story = {
   decorators: [
     (story) => <Mockstore taskboxState={MockedState}>{story()}</Mockstore>,
   ],
 };
 
-export const WithPinnedTasks = {
+export const WithPinnedTasks: Story = {
   decorators: [
     (story) => {
       const pinnedtasks = [
@@ -81,7 +96,7 @@ export const WithPinnedTasks = {
   ],
 };
 
-export const Loading = {
+export const Loading: Story = {
   decorators: [
     (story) => (
       <Mockstore
@@ -96,7 +111,7 @@ export const Loading = {
   ],
 };
 
-export const Empty = {
+export const Empty: Story = {
   decorators: [
     (story) => (
       <Mockstore

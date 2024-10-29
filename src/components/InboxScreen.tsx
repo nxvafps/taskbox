@@ -1,19 +1,25 @@
+import React from "react";
+
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchTasks } from "../lib/store/asyncActions.js";
 
-import TaskList from "./TaskList";
+import TaskList from "./TaskList.js";
 
-export default function InboxScreen() {
-  const dispatch = useDispatch();
+import { RootState, AppDispatch } from "../lib/store";
+
+import { ThunkDispatch } from "@reduxjs/toolkit";
+
+const InboxScreen: React.FC = () => {
+  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
   // retrieving the error field from our updated store
-  const { error } = useSelector((state) => state.taskbox);
+  const { error } = useSelector((state: RootState) => state.taskbox);
   // the useEffect triggers the data fetching when the component is mounted
   useEffect(() => {
     dispatch(fetchTasks());
-  }, []);
+  }, [dispatch]);
 
   if (error) {
     return (
@@ -35,4 +41,6 @@ export default function InboxScreen() {
       <TaskList />
     </div>
   );
-}
+};
+
+export default InboxScreen;
