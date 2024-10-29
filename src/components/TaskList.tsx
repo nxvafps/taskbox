@@ -1,15 +1,25 @@
-import Task from "./Task";
+import React from "react";
+
+import Task from "./Task.js";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { updateTaskState } from "../lib/store/tasksSlice.js";
 
-export default function TaskList() {
+import type { RootState } from "../lib/store";
+
+interface TaskType {
+  id: string;
+  title: string;
+  state: string;
+}
+
+const TaskList: React.FC = () => {
   // We're retrieving our state from the store
-  const tasks = useSelector((state) => {
-    const tasksInOrder = [
-      ...state.taskbox.tasks.filter((t) => t.state === "TASK_PINNED"),
-      ...state.taskbox.tasks.filter((t) => t.state !== "TASK_PINNED"),
+  const tasks = useSelector((state: RootState) => {
+    const tasksInOrder: TaskType[] = [
+      ...state.taskbox.tasks.filter((t: TaskType) => t.state === "TASK_PINNED"),
+      ...state.taskbox.tasks.filter((t: TaskType) => t.state !== "TASK_PINNED"),
     ];
     const filteredTasks = tasksInOrder.filter(
       (t) => t.state === "TASK_INBOX" || t.state === "TASK_PINNED"
@@ -17,15 +27,15 @@ export default function TaskList() {
     return filteredTasks;
   });
 
-  const { status } = useSelector((state) => state.taskbox);
+  const { status } = useSelector((state: RootState) => state.taskbox);
 
   const dispatch = useDispatch();
 
-  const pinTask = (value) => {
+  const pinTask = (value: string) => {
     // We're dispatching the Pinned event back to our store
     dispatch(updateTaskState({ id: value, newTaskState: "TASK_PINNED" }));
   };
-  const archiveTask = (value) => {
+  const archiveTask = (value: string) => {
     // We're dispatching the Archive event back to our store
     dispatch(updateTaskState({ id: value, newTaskState: "TASK_ARCHIVED" }));
   };
@@ -73,4 +83,6 @@ export default function TaskList() {
       ))}
     </div>
   );
-}
+};
+
+export default TaskList;

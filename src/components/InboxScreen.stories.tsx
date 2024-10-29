@@ -1,3 +1,7 @@
+import React from "react";
+
+import type { Meta, StoryObj } from "@storybook/react";
+
 import InboxScreen from "./InboxScreen";
 
 import store from "../lib/store";
@@ -15,14 +19,18 @@ import {
   waitForElementToBeRemoved,
 } from "@storybook/test";
 
-export default {
+const meta: Meta<typeof InboxScreen> = {
   component: InboxScreen,
   title: "InboxScreen",
   decorators: [(story) => <Provider store={store}>{story()}</Provider>],
   tags: ["autodocs"],
 };
 
-export const Default = {
+export default meta;
+
+type Story = StoryObj<typeof InboxScreen>;
+
+export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
@@ -46,12 +54,12 @@ export const Default = {
   },
 };
 
-export const Error = {
+export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
         http.get("https://jsonplaceholder.typicode.com/todos?userId=1", () => {
-          return HttpResponse(null, {
+          return new HttpResponse(null, {
             status: 403,
           });
         }),

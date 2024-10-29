@@ -9,7 +9,19 @@ const defaultTasks = [
   { id: "4", title: "Something again", state: "TASK_INBOX" },
 ];
 
-const TaskBoxData = {
+interface TaskType {
+  id: string;
+  title: string;
+  state: string;
+}
+
+interface TaskBoxTypes {
+  tasks: TaskType[];
+  status: string;
+  error: string | null;
+}
+
+const TaskBoxData: TaskBoxTypes = {
   tasks: defaultTasks,
   status: "idle",
   error: null,
